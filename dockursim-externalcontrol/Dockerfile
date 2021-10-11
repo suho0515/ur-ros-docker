@@ -77,14 +77,7 @@ RUN \
     /var/lib/apt/lists/* \
     /var/tmp/*
 
-# Download External Control URCap Program
-RUN /bin/bash -c "apt-get update &&\
-    apt install -y wget &&\ 
-    wget -P /ursim/programs/ https://github.com/suho0515/ur-ros-docker/blob/master/dockursim-externalcontrol/externalcontrol-1.0.5.urcap"
 
-# Download 'run' file for     
-RUN /bin/bash -c "mkdir -p /etc/services.d/ursim &&\ 
-    wget -P /ursim/programs/ https://github.com/suho0515/ur-ros-docker/blob/master/dockursim-externalcontrol/externalcontrol-1.0.5.urcap"
 
 # Copy ursim run service script
 #COPY ursim /etc/services.d/ursim
@@ -101,7 +94,15 @@ EXPOSE 29999
 EXPOSE 30001-30004
 
 # Mount Volumes
-# we already make virtual volume and mount that, so it is no nessasary
-#VOLUME /ursim
+VOLUME /ursim
 
+# Download External Control URCap Program
+RUN /bin/bash -c "apt-get update &&\
+    apt install -y git &&\
+    git clone https://github.com/suho0515/ur-ros-docker.git &&\
+    mkdir -p /etc/services.d/ursim &&\
+    mkdir -p /ursim/urcap &&\
+    cp /ur-ros-docker/dockursim-externalcontrol/run etc/services.d/ursim/ &&\
+    cp /ur-ros-docker/dockursim-externalcontrol/externalcontrol-1.0.5.urcap /ursim/urcap/"
+    
 ENTRYPOINT ["/init"]
