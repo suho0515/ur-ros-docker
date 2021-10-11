@@ -77,6 +77,15 @@ RUN \
     /var/lib/apt/lists/* \
     /var/tmp/*
 
+# Download External Control URCap Program
+RUN /bin/bash -c "apt-get update &&\
+    apt install -y wget &&\ 
+    wget -P /ursim/programs/ https://github.com/suho0515/ur-ros-docker/blob/master/dockursim-externalcontrol/externalcontrol-1.0.5.urcap"
+
+# Download 'run' file for     
+RUN /bin/bash -c "mkdir -p /etc/services.d/ursim &&\ 
+    wget -P /ursim/programs/ https://github.com/suho0515/ur-ros-docker/blob/master/dockursim-externalcontrol/externalcontrol-1.0.5.urcap"
+
 # Copy ursim run service script
 #COPY ursim /etc/services.d/ursim
 
