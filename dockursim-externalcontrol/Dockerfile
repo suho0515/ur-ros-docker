@@ -94,15 +94,13 @@ EXPOSE 29999
 EXPOSE 30001-30004
 
 # Mount Volumes
-VOLUME /ursim
+#VOLUME /ursim
 
-# Download External Control URCap Program
+# Download ursim run script
 RUN /bin/bash -c "apt-get update &&\
     apt install -y git &&\
     git clone https://github.com/suho0515/ur-ros-docker.git &&\
     mkdir -p /etc/services.d/ursim &&\
-    mkdir -p /ursim/urcap &&\
-    cp /ur-ros-docker/dockursim-externalcontrol/run etc/services.d/ursim/ &&\
-    cp /ur-ros-docker/dockursim-externalcontrol/externalcontrol-1.0.5.urcap /ursim/urcap/"
-    
+    cp /ur-ros-docker/dockursim-externalcontrol/run etc/services.d/ursim/ &&\    
+    rm -r ur-ros-docker"
 ENTRYPOINT ["/init"]
